@@ -21,7 +21,7 @@ Fx = fft(vector1); % Algoritmo para calcular los valores de la Transformada de F
 Fxs = fftshift(Fx); % Corrimiento de la transformada para obtener valores negativos y positivos. 
 f = (-n/2:n/2-1)*fs/n; % Creación del vector de Frecuencias
 
-Fxs = amplify_frequency(Fxs,f,3000,4000,2);
+Fxs = amplify_frequency_hanning(Fxs,f,3000,4000-1,1000);
 
 % hold on
 % plot(f,abs(Fxs));
