@@ -60,9 +60,9 @@ y = y./max(y); % Se normaliza la señal de salida
 
 %% Plot Señal Reconstruida
 
-% plot(y)
-% title('Espectro de Frecuencias Modificado')
-% xlabel('Frecuencia (w)')
-% ylabel('Magnitud')
-% ax = gca;
-% exportgraphics(ax,'senalmodificada.png','Resolution',800)
+plot(y)
+title('Señal Modificada')
+xlabel('Tiempo (t)')
+ylabel('Amplitud')
+ax = gca;
+exportgraphics(ax,'senalmodificada.png','Resolution',800)
