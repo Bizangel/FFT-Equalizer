@@ -13,9 +13,10 @@ w0_index_neg = floor(n/2) - floor((n/2)*w0/max_fs);
 
 window = hanning(w1_index-w0_index + 1);
 
+
 length(Fxs(w0_index:w1_index))
 length(window)
-amplified = Fxs;
+amplified = zeros([1 length(Fxs)]);
 amplified(w0_index:w1_index) = Fxs(w0_index:w1_index)*alpha.*window;
 amplified(w1_index_neg:w0_index_neg) = Fxs(w1_index_neg:w0_index_neg)*alpha.*window;
 

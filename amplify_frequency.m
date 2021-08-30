@@ -11,14 +11,9 @@ w1_index = floor(n/2) + floor((n/2)*w1/max_fs) - 1;
 w1_index_neg = floor(n/2) - floor((n/2)*w1/max_fs) + 1;
 w0_index_neg = floor(n/2) - floor((n/2)*w0/max_fs);
 
-amplified = Fxs;
+amplified = zeros([1 length(Fxs)]);
 amplified(w0_index:w1_index) = Fxs(w0_index:w1_index)*alpha;
 amplified(w1_index_neg:w0_index_neg) = Fxs(w1_index_neg:w0_index_neg)*alpha;
 
-% hold on
-% plot(f,abs(Fxs))
-% plot(f(w0_index:w1_index),abs(Fxs(w0_index:w1_index)))
-% plot(f(w1_index_neg:w0_index_neg),abs(Fxs(w1_index_neg:w0_index_neg)))
-% hold off
 end
 
