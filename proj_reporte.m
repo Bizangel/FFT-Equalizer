@@ -1,61 +1,68 @@
 clear all
-% Sampling frequency is 8khz
+%% Lectura de datos
+% Se leen las distintas señales de audios, todas con frecuencia de muestreo
+% de 8khz, Se trabajara con el vector1, un fragmento de fur elise
 [vector1, ~] = audioread('samples/fur_elise_crop.wav');
 [vector2, ~] = audioread('samples/cars1.wav');
 [vector3, fs] = audioread('samples/habito6.wav');
 
+% Se normalizan los vectores
 vector1 = vector1/max(vector1);
 vector2 = vector2/max(vector2);
 vector3 = vector3/max(vector3);
 
-%% plotsitos
-% fourier_plot(vector1, fs)
 
-% plot(vector2)
-% plot(vector3)
 
-%% fourierizacion
+%% Plot Señal Original
+
+% plot(vector1)
+% title('Señal original')
+% xlabel('Tiempo (t)')
+% ylabel('Amplitud')
+% ax = gca;
+% exportgraphics(ax,'senaloriginal.png','Resolution',800)
+
+
+%% Aplicación Transformada de Fourier
 
 n = length(vector1);
 Fx = fft(vector1); % Algoritmo para calcular los valores de la Transformada de Fourier
 Fxs = fftshift(Fx); % Corrimiento de la transformada para obtener valores negativos y positivos. 
 f = (-n/2:n/2-1)*fs/n; % Creación del vector de Frecuencias
 
-Fxs = amplify_frequency_hanning(Fxs,f,3000,4000-1,1000);
+%% Plot Transformada de Fourier
 
-% hold on
-% plot(f,abs(Fxs));
-% Fxs = amplify_frequency(Fxs,f,1000,2000,10);
-% plot(f,abs(Fxs));
-% hold off
+% plot(f,abs(Fxs))
+% title('Espectro de Frecuencias')
+% xlabel('Frecuencia (w)')
+% ylabel('Magnitud')
+% ax = gca;
+% exportgraphics(ax,'senaloriginal_fourier.png','Resolution',800)
 
+%% Amplificación de la señal
+Fxs_mod = amplify_frequency(Fxs,f,3500,4000-1,100) + Fxs; % Amplificación ventana rectangular
+
+%% Plot del espectro amplificado
+
+% plot(f,abs(Fxs_mod))
+% title('Espectro de Frecuencias Modificado')
+% xlabel('Frecuencia (w)')
+% ylabel('Magnitud')
+% ax = gca;
+% exportgraphics(ax,'senalmodificada_fourier.png','Resolution',800)
+
+%% Reconstrucción de la señal original
 Fx2 = ifftshift(Fxs); % Devolviendo el corrimiento realizado con fftshift
 y = real(ifft(Fx2)); % Calculando la transformada inversa (Se toma la parte real, porque debido 
                      % a errores numericos se obtiene una transformada compleja, pero los valores 
                      % complejos son muy pequeños.
 y = y./max(y); % Se normaliza la señal de salida
 
+%% Plot Señal Reconstruida
 
-sound(y,fs)
-function fourier_plot(x, fs)
-n = length(x);
-Fx = fft(x); % Algoritmo para calcular los valores de la Transformada de Fourier
-Fxs = fftshift(Fx); % Corrimiento de la transformada para obtener valores negativos y positivos. 
-f = (-n/2:n/2-1)*fs/n; % Creación del vector de Frecuencias
-
-% Grafica de la magnitud de la transformada de Fourier
-figure, subplot(211)
-plot(f,abs(Fxs))
-xlabel('Frecuencia [Hz]')
-ylabel('Amplitud [u.a.]')
-title ('Magnitud de la Transformada de Fourier de la Señal')
-grid on
-
-% Grafica de la magnitud de la transformada de Fourier
-subplot(212)
-plot(f,angle(Fxs))
-xlabel('Frecuencia [Hz]')
-ylabel('Fase [radianes]')
-title ('Fase de la Transformada de Fourier de la Señal')
-grid on
-end
+% plot(y)
+% title('Espectro de Frecuencias Modificado')
+% xlabel('Frecuencia (w)')
+% ylabel('Magnitud')
+% ax = gca;
+% exportgraphics(ax,'senalmodificada.png','Resolution',800)
